@@ -1,38 +1,221 @@
-.App {
-  text-align: center;
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #f4f8fb;
+  color: #333;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+.app-container {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
+  background: #f4f8fb;
+}
+
+/* Header */
+.header {
+  background: #1976d2;
+  color: #fff;
+  padding: 0.7rem 0;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+  border-radius: 0 0 16px 16px;
+}
+
+.emoji {
+  font-size: 2rem;
+}
+
+.title {
+  font-family: inherit;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+/* Main Content */
+.content {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.products-grid {
+  display: flex;
+  gap: 2rem;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  box-shadow: 0 4px 16px rgba(25, 118, 210, 0.1);
+  min-width: 220px;
+  max-width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.card:hover {
+  box-shadow: 0 8px 24px rgba(25, 118, 210, 0.18);
+  transform: translateY(-4px) scale(1.03);
+}
+
+.card h2 {
+  margin: 0.8rem 0 0.4rem;
+  font-size: 1.15rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.price {
+  font-weight: bold;
+  color: #1976d2;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.quantity-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.2rem;
+  margin-top: 1rem;
+}
+
+.quantity-controls button {
+  background: #1976d2;
   color: white;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(25, 118, 210, 0.08);
 }
 
-.App-link {
-  color: #61dafb;
+.quantity-controls button:disabled {
+  background: #e0e0e0;
+  color: #aaa;
+  cursor: not-allowed;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.quantity-controls button:hover:not(:disabled) {
+  background: #1565c0;
+}
+
+.quantity-controls span {
+  font-size: 1.1rem;
+  min-width: 28px;
+  text-align: center;
+  display: inline-block;
+  font-weight: 500;
+}
+
+.checkout {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 1.2rem;
+}
+
+.highlight {
+  color: #1976d2;
+  font-weight: bold;
+}
+
+.checkout button {
+  margin-top: 1rem;
+  padding: 0.8rem 2.2rem;
+  background: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+}
+
+.checkout button:disabled {
+  background: #e0e0e0;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.checkout button:hover:not(:disabled) {
+  background: #1565c0;
+}
+
+/* Result Messages */
+.result {
+  margin-top: 1rem;
+  padding: 0.7rem 1.2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.result.success {
+  background: #e3f6e8;
+  color: #1976d2;
+  border: 1px solid #1976d2;
+}
+
+.result.failure {
+  background: #ffeaea;
+  color: #d32f2f;
+  border: 1px solid #d32f2f;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .products-grid {
+    gap: 1.2rem;
   }
-  to {
-    transform: rotate(360deg);
+  .card {
+    min-width: 180px;
+    max-width: 90vw;
+    padding: 1.2rem 0.8rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .header {
+    font-size: 1.3rem;
+    padding: 1rem 0;
+  }
+  .products-grid {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  .card {
+    width: 95vw;
+    max-width: 320px;
+    padding: 1rem 0.5rem;
+  }
+  .checkout {
+    font-size: 1rem;
   }
 }
