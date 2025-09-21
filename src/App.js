@@ -37,27 +37,32 @@ function App() {
       const res = await fetch(`${BACKEND_URL}/api/payment/create-order`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ totalAmount: total * 100 }), // Convert to paise
+        body: JSON.stringify({ totalAmount: total * 100 }), // send amount in paise
       });
+      if (!res.ok) throw new Error("API error");
       const order = await res.json();
+
       const options = {
         key: "rzp_test_RIyjeTmNCvUynj", // Replace with your Razorpay Key ID
         amount: order.amount,
         currency: order.currency,
         order_id: order.id,
-        handler: (response) => {
+        handler: function (response) {
           setLoading(false);
           setPaymentResult({
             success: true,
-            message: `Payment successful!`,
+            message: `Payment successful! ID: ${response.razorpay_payment_id}`,
           });
         },
-        prefill: {
-          name: "Test User",
-          email: "test@example.com",
-          contact: "9999999999",
+        modal: {
+          ondismiss: function () {
+            setLoading(false);
+            setPaymentResult({
+              success: false,
+              message: "Payment cancelled or failed.",
+            });
+          },
         },
-        theme: { color: "#1976d2" },
       };
       const rzp = new window.Razorpay(options);
       rzp.open();
@@ -84,7 +89,10 @@ function App() {
               <h2>{product.name}</h2>
               <p className="price">₹{product.price}</p>
               <div className="quantity-controls">
-                <button onClick={() => handleRemove(idx)} disabled={quantities[idx] === 0}>
+                <button
+                  onClick={() => handleRemove(idx)}
+                  disabled={quantities[idx] === 0}
+                >
                   −
                 </button>
                 <span>{quantities[idx]}</span>
@@ -95,14 +103,19 @@ function App() {
         </div>
         <div className="checkout">
           <p>
-            Total Payable: <span className="highlight">₹{total}</span>
+            Total Payable:{" "}
+            <span className="highlight">₹{total}</span>
           </p>
           <button disabled={total === 0 || loading} onClick={handlePay}>
             {loading ? "Processing…" : "Pay Now"}
           </button>
           {/* Payment result indication */}
           {paymentResult && (
-            <div className={paymentResult.success ? "result success" : "result failure"}>
+            <div
+              className={
+                paymentResult.success ? "result success" : "result failure"
+              }
+            >
               {paymentResult.message}
             </div>
           )}
