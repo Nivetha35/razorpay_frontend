@@ -6,6 +6,8 @@ const products = [
   { id: 2, name: "500g Mango Pickle", price: 80 },
 ];
 
+const BACKEND_URL = "https://razorpay-backend-0ngl.onrender.com"; // use your actual backend URL
+
 function App() {
   const [quantities, setQuantities] = useState([0, 0]);
   const [loading, setLoading] = useState(false);
@@ -32,10 +34,10 @@ function App() {
     setLoading(true);
     setPaymentResult(null);
     try {
-      const res = await fetch("https://razorpay-backend-0ngl.onrender.com/api/payment/create-order", {
+      const res = await fetch(`${BACKEND_URL}/api/payment/create-order`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ totalAmount: total }),
+        body: JSON.stringify({ totalAmount: total * 100 }), // Convert to paise
       });
       const order = await res.json();
       const options = {
